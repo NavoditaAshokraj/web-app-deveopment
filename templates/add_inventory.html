@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Klinyx - Contact Form{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+<h1 class="display-12" style="text-align: center">Contact Us</h1>
+<h3 class="display-12" style="text-align: center">Enquiry</h3>
+<div id="contact" class="container" style="background-color: #98DDE2; border-radius: 25px; padding-top:50px; padding-bottom:50px; padding-left:300px;">
+
+  <div class="row" >
+    <div class="col-md-8">
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            {{ render_field(form.full_name, class="form-control") }}
+          </div>
+          <div class="col-sm-12 form-group">
+            {{ render_field(form.email_address, class="form-control") }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            {{ render_field(form.Subject, class="form-control") }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 form-group" style="padding-left:240px;">
+            <input type="submit" value="Submit" class="btn btn-primary" style="background-color: black;"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

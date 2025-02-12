@@ -1,0 +1,37 @@
+{% extends "staff_template.html" %}
+{% block title %} Klinyx - Staff Dashboard {% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='staff_home.css') }}">
+<div class="home_content" style="margin-left: 15vh; margin-top:2vh;">
+    <section style="display:flex; flex-direction:column;">
+        <h1 style="margin-left:15%; margin-top:4%;">Welcome, {{ user.get_name() }}</h1>
+        <div class="notifications">
+            <h1>Notifications</h1>
+            <ul>
+                <li>Notification 1</li>
+                <li>Notification 1</li>
+                <li>Notification 1</li>
+                <li>Notification 1</li>
+            </ul>
+            <button type="button" onclick="alert(('Hello world!')" style="width:20%; margin-left:40%; padding:9px 9px;
+            margin-top:-1.5vh;">
+                View more</button>
+        </div>
+    </section>
+    <div class="totals">
+        <div class="total_bookings">
+            <h3>Total Bookings</h3>
+            <h1>26</h1>
+            <p>Within the last 24 hours</p>
+        </div>
+        <div class="total_newacc">
+            <h3>Total New Accounts</h3>
+            <h1>8</h1>
+            <p>Within the last 24 hours</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "staff_template.html" %}
+{% block title %} Klinyx - Medicine Inventory {% endblock %}
+
+{% block content %}
+<style>
+
+/* Ensuring that the wrapper uses flexbox to align items side by side */
+.wrapper {
+    display: flex;
+}
+
+/* Styling for the main content area */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 20px; /* Optional: to create space between sidebar and content */
+}
+
+.table {
+    width: 1200px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+</style>
+
+<div class="wrapper">
+
+    <!-- Main content area -->
+    <div class="main-content">
+        <h1 class="display-4">Inventory Overview <a href="/portal/inventory/add" class="btn btn-warning">
+            <button>Add</button></a></h1>
+
+        {% if not inventory_list %}
+            <h2>There are no records.</h2>
+        {% else %}
+            <table class="table table-striped mt-3">
+                <thead style="background-color:#A4E9ED">
+                    <tr>
+                        <th>Name</th>
+                        <th>Stock</th>
+                        <th>Base Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for medicine in inventory_list %}
+                    <tr>
+                        <td>{{ medicine.get_name() }}</td>
+                        <td>{{ medicine.get_count() }}</td>
+                        <td>${{ medicine.get_price() }}</td>
+                        <td>
+                            <a href="/portal/inventory/edit-{{ medicine.get_id() }}" class="btn btn-warning">
+                                <button>Update</button></a>
+                            <form action="{{ url_for('remove_medicine', id=medicine.get_id()) }}" method="POST">
+                                <input type="submit" value="Delete" id="delete" class="btn btn-danger" onclick="return confirm('Are
+                                you sure you want to remove {{ medicine.get_id() }}: {{ medicine.get_name() }}?);">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

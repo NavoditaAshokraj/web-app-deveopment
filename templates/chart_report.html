@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "staff_template.html" %}
+{% block title %}Klinyx - Create Report{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='chart.css') }}">
+<div class="container">
+    <h2>Create Reports</h2>
+    <div class="chartform">
+        <div class="chart-field" id="chart1">
+            <h4 style="margin: 2vh 0vh;">Chart 1</h4>
+            <label for="analysis1">Choose an analysis to add to report</label>
+            <select id="analysis1" class="analysis-select">
+                <option value="">--Select--</option>
+                <option value="user_ratings">User ratings</option>
+                <option value="num_visits">Number of visits by each user</option>
+                <option value="location_users">Location of Users</option>
+            </select>
+        </div>
+        <div id="additionalCharts"></div> <!-- Container for additional charts -->
+        <div class="chart_buttons">
+            <button class="chartgen" class="buttons" onclick="addChart()">Add chart</button>
+            <button class="chartgen" class="buttons" onclick="deleteLastChart()">Delete chart</button> <!-- Delete chart button -->
+        </div>
+        <label for="reportName" style="margin: 10px 0px;">Report Name (mandatory):</label>
+        <input type="text" id="reportName" name="reportName" placeholder="Enter report name" required>
+        <label for="description" style="margin: 10px 0px;">Description for the report (optional):</label>
+        <textarea id="description" rows="3" cols="50"></textarea>
+        <button class="chartgen" onclick="generateReport()">Generate report</button> <!-- Generate report button -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let chartCount = 1;
+
+    function addChart() {
+        if (chartCount >= 3) {
+            alert("Maximum of 3 charts can be added.");
+            return;
+        }
+        chartCount++;
+
+        const additionalChartsContainer = document.getElementById('additionalCharts');
+        const newChartField = document.createElement('div');
+        newChartField.classList.add('chart-field');
+        newChartField.id = `chart${chartCount}`;
+
+        const header = document.createElement('h4');
+        header.textContent = `Chart ${chartCount}`;
+
+        const label = document.createElement('label');
+        label.htmlFor = `analysis${chartCount}`;
+        label.textContent = `Choose an analysis to add to report`;
+
+        const select = document.createElement('select');
+        select.id = `analysis${chartCount}`;
+        select.classList.add('analysis-select');
+        select.style.height = '4vh';
+        select.innerHTML = `
+            <option value="">--Select--</option>
+            <option value="user_ratings">User ratings</option>
+            <option value="num_visits">Number of visits by each user</option>
+            <option value="location_users">Location of Users</option>
+        `;
+
+        newChartField.appendChild(header);
+        newChartField.appendChild(label);
+        newChartField.appendChild(select);
+
+        additionalChartsContainer.appendChild(newChartField);
+    }
+
+    function deleteLastChart() {
+        if (chartCount <= 1) {
+            alert("There must be at least one chart.");
+            return;
+        }
+        const additionalChartsContainer = document.getElementById('additionalCharts');
+        additionalChartsContainer.removeChild(additionalChartsContainer.lastChild);
+        chartCount--;
+    }
+
+    function generateReport() {
+        const reportName = document.getElementById("reportName").value.trim();
+        const description = document.getElementById("description").value;
+
+        if (reportName === "") {
+            alert("Report name is mandatory.");
+            return;
+        }
+
+        fetch('/get_reports', { method: 'GET' })
+            .then(response => response.json())
+            .then(reports => {
+                if (reports[reportName]) {
+                    alert("A report with this name already exists. Please choose a different name.");
+                    return;
+                }
+
+                const analyses = [];
+                const analysisSelects = document.querySelectorAll('.analysis-select');
+
+                analysisSelects.forEach((select, index) => {
+                    if (select.value === "") {
+                        alert(`Please select an analysis for Chart ${index + 1}.`);
+                        return;
+                    }
+                    analyses.push(select.value);
+                });
+
+                if (analyses.length !== chartCount) {
+                    return; // If any analysis is missing, stop the report generation.
+                }
+
+                fetch('/generate_report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ analyses, reportName, description })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Report generated successfully!");
+                    } else {
+                        alert("Failed to generate report.");
+                    }
+                })
+                .catch(err => console.error('Error:', err));
+            })
+            .catch(err => console.error('Error:', err));
+    }
+</script>
+{% endblock %}
+</html>

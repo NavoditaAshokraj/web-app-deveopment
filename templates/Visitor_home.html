@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klinyx - Home</title>
+    <link rel="stylesheet" href="./static/_navbar.css">
+    <link rel="stylesheet" type="text/css" href="../static/visitor_home.css">
+</head>
+
+<body>
+    {% block navbar %}
+        {% include '/includes/_navbar.html' %}
+    {% endblock %}
+
+    <div class="button-container">
+        <a href="/home/booking"><button>BOOK APPOINTMENT</button></a>
+        <a href="/home/records"><button>VIEW PAST RECORDS</button></a>
+        <a href="/home/feedback"><button>FEEDBACK FORM</button></a>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <h2>Your queue number is</h2>
+            <h1>10</h1>
+            <p>There are 6 people in front of you</p>
+        </div>
+    </div>
+</body>

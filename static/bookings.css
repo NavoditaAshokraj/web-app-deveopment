@@ -1,0 +1,110 @@
+body {
+    margin: 0%;
+    overflow: hidden; 
+    background-color: #F2F2F2;
+    font-family: Arial, sans-serif;
+}
+
+body > h1 {
+    margin-left: 2%;
+    font-size: 360%;
+    padding: 2% 3%;
+}
+
+.bookings-container {
+    margin-inline: 5%;
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.booking-element {
+    padding-inline: 2%;
+    display: flex;
+    margin-inline: 2%;
+    margin-block: 4px;
+    background-color: white;
+    border: 3px solid #CAC4D0;
+    border-radius: 8px;
+}
+
+.initial {
+    font-size: 220%;
+    text-align: center;
+    color: #F2F2F2;
+    border: #3b8c92;
+    border-radius: 100%;
+    background-color: #46A0A6;
+    width: 3.5%;
+    padding: 1.5%;
+    margin-right: 2%;
+}
+
+.booking-text > h1 {
+    padding-top: 12px;
+}
+
+.booking-text > p {
+    margin-top: -10px;
+}
+
+.card {
+    margin-inline: 15%;
+    padding: 2% 2%;
+    background-color: white;
+    display: grid;
+    grid-template-areas: 
+        "left left right right ."
+        "left left right right ."
+        "left left right right ."
+        "left left right right button"
+        ". . . . button";
+}
+
+.content-wrap-left {
+    display: inline-block;
+    margin-inline: 10%;
+    grid-area: left;
+}
+
+.content-wrap-right {
+    display: inline-block;
+    margin-inline: 10%;
+    grid-area: right;
+}
+
+.card > div > div {
+    display: block;
+}
+
+.buttons {
+    grid-area: button;
+    display: grid;
+}
+
+.buttons > button {
+    padding: 8%;
+    margin-block: 2%;
+    border-radius: 10px;
+}
+
+#cancel {
+    background-color: #98DDE2;
+    border-color: #46A0A6;
+    width:120px;
+    text-align:center;
+    font-size:15px;
+    margin-bottom:15px;
+    height:30px;
+}
+
+#reschedule {
+    padding-top:7px;
+    background-color: black;
+    border-color: black;
+    color: white;
+    text-decoration:none;
+    text-align:center;
+    width:120px;
+    font-size:15px;
+    height:23px;
+}

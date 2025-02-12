@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Klinyx - Choose Login</title>
+</head>
+<body>
+    <div style="background-color:#98DDE2; width: 70%; margin-left:15%; height:80vh; margin-top:5%;
+                row-gap:10vh; border-radius:10px;">
+        <a href="/patient"><img src="{{url_for('static', filename='loginicon.png')}}" style="margin-top:10%; margin-left:15%;
+                width:27%;" href="/patient"></a>
+        <a style="position:absolute; font-size:30px; margin-left: -14%; margin-top:27.5%; color:black; text-decoration:none;
+        font-family:'Arial'" href="/patient">VISITOR</a>
+        <a href="/staff"><img src="{{url_for('static', filename='loginicon.png')}}" style="margin-top:10%; margin-left:15%;
+                width:27%;"></a>
+        <a style="position:absolute; font-size:30px; margin-left: -12.5%; margin-top:27.5%; font-family:'Arial';
+                color:black; text-decoration:none;"
+                href="/staff">STAFF</a>
+    </div>
+</body>
+</html>

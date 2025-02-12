@@ -1,0 +1,35 @@
+{% extends "staff_template.html" %}
+{% block title %} Klinyx - Edit Inventory{% endblock %}
+
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+<h1 class="display-12" style="text-align: center">Booking</h1>
+<h3 class="display-12" style="text-align: center">Personal Details</h3>
+<div id="contact" class="container" style="background-color: #98DDE2; border-radius: 25px; padding-top:50px; padding-bottom:50px; padding-left:300px;">
+
+  <div class="row" >
+    <div class="col-md-8">
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          {{ render_field(form.name, class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.price, class="form-control datepicker") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.count, class="form-control") }}
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12 form-group" style="padding-left:240px; ">
+            <input type="submit" value="Book Now" class="btn btn-primary" style="background-color: black;"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

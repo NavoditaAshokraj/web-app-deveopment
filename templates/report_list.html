@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "staff_template.html" %}
+
+{% block title %}Klinyx - View Reports{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='chart.css') }}">
+<div class="container">
+    <div class="reports">
+        <p class="reportslist">Reports List</p>
+        <table id="reportTable" class="table">
+            <thead style="border-style: solid;">
+                <tr style="background-color:#A4E9ED; width: 100vh;">
+                    <th>Name</th>
+                    <th style="border: 1px solid #ddd;">Rename</th>
+                    <th style="border: 1px solid #ddd;">Preview</th>
+                    <th style="border: 1px solid #ddd;">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="reportList" style="border-style: solid;">
+                <!-- Report rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function loadReports() {
+        fetch('/get_reports', { method: 'GET' })
+            .then(response => response.json())
+            .then(reports => {
+                const reportList = document.getElementById("reportList");
+                reportList.innerHTML = ''; // Clear the table body
+                for (const [filename, pathInfo] of Object.entries(reports)) {
+                    const row = document.createElement('tr');
+
+                    // Name cell
+                    const nameCell = document.createElement('td');
+                    const link = document.createElement('a');
+                    link.href = `/download_report/${encodeURIComponent(filename)}`;
+                    link.textContent = filename;
+                    link.download = filename;
+                    nameCell.appendChild(link);
+                    row.appendChild(nameCell);
+
+                    // Rename button cell
+                    const renameCell = document.createElement('td');
+                    const renameButton = document.createElement('button');
+                    renameButton.textContent = 'Rename';
+                    renameButton.classList.add('rename-button');
+                    renameButton.onclick = function() {
+                        const newName = prompt('Enter new report name:', filename);
+                        if (newName && newName !== filename) {
+                            fetch('/get_reports', { method: 'GET' })
+                                .then(response => response.json())
+                                .then(reports => {
+                                    if (reports[newName]) {
+                                        alert("A report with this name already exists. Please choose a different name.");
+                                        return;
+                                    }
+
+                                    fetch(`/rename_report/${filename}`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ newName })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        alert(data.message);
+                                        loadReports();
+                                    })
+                                    .catch(err => console.error('Error:', err));
+                                })
+                                .catch(err => console.error('Error:', err));
+                        }
+                    };
+                    renameCell.appendChild(renameButton);
+                    row.appendChild(renameCell);
+
+                    // Preview button cell
+                    const previewCell = document.createElement('td');
+                    const previewButton = document.createElement('button');
+                    previewButton.textContent = 'Preview';
+                    previewButton.classList.add('rename-button');
+                    previewButton.onclick = function() {
+                        // Open report in a new tab with iframe
+                        window.open(`/preview_report/${encodeURIComponent(filename)}`, '_blank');
+                    };
+                    previewCell.appendChild(previewButton);
+                    row.appendChild(previewCell);
+
+
+                    // Delete button cell
+                    const deleteCell = document.createElement('td');
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.classList.add('rename-button');
+                    deleteButton.onclick = function() {
+                        fetch(`/delete_report/${filename}`, { method: 'POST' })
+                            .then(response => response.json())
+                            .then(data => {
+                                alert(data.message);
+                                loadReports();
+                            })
+                            .catch(err => console.error('Error:', err));
+                    };
+                    deleteCell.appendChild(deleteButton);
+                    row.appendChild(deleteCell);
+
+                    reportList.appendChild(row);
+                }
+            })
+            .catch(err => console.error('Error:', err));
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadReports();
+    });
+</script>
+{% endblock %}
+</html>

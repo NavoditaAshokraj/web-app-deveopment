@@ -1,0 +1,32 @@
+.nav-pills {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.nav-pills .nav-item {
+    margin-right: 15px; /* Adjust spacing between pills */
+}
+
+.nav-pills .nav-link {
+    display: block;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    background-color: #f0f0f0; /* Default background color */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link.active {
+    color: #fff;
+    background-color: #007bff;
+}
+
+/* Hover state styling */
+.nav-pills .nav-link:hover {
+    background-color: #e0e0e0; /* Hover background color */
+}
+

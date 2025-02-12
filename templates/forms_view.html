@@ -1,0 +1,110 @@
+{% extends "staff_template.html" %}
+{% block title %}Klinyx - Helpdesk{% endblock %}
+
+{% block content %}
+<style>
+/* Ensuring that the wrapper uses flexbox to align items side by side */
+.wrapper {
+    display: flex;
+}
+
+/* Styling for the main content area */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 20px; /* Optional: to create space between sidebar and content */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='storage_pills.css') }}">
+
+<div class="wrapper">
+    <!-- Main content area -->
+    <div class="main-content" style="margin-left:3%;">
+        <h1 class="display-4">Helpdesk Overview</h1>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link {% if selected_view == 'feedback' %}active{% endif %}" href="{{ url_for('forms_view', view='feedback') }}">Feedback</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if selected_view == 'contact' %}active{% endif %}" href="{{ url_for('forms_view', view='contact') }}">Contact</a>
+            </li>
+        </ul>
+
+        <table class="table table-striped mt-3" style="margin-top:16px;">
+            <thead style="background-color:#A4E9ED">
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email Address</th>
+                    <th>Timestamp</th>
+                    {% if selected_view == 'feedback' %}
+                        <th>Ratings</th>
+                        <th>Remarks</th>
+                        <th>Delete</th>
+                    {% elif selected_view == 'contact' %}
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Reply</th>
+                        <th>Delete</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in submissions_data %}
+                <tr>
+                    <td>{{ submission.get('_User__name', 'N/A') }}</td>
+                    <td>{{ submission.get('_User__email', 'N/A') }}</td>
+                    <td>{{ submission.get('timestamp', 'N/A') }}</td>
+                    {% if selected_view == 'feedback' %}
+                        <td>{{ submission.get('_Feedback__rate', 'N/A') }}</td>
+                        <td>{{ submission.get('_Feedback__remarks', 'N/A') }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_feedback', email=submission['_User__email']) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    {% elif selected_view == 'contact' %}
+                        <td>{{ submission.get('_ContactUs__Subject', 'N/A') }}</td>
+                        <td>{{ submission.get('_ContactUs__remarks', 'N/A') }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('reply_submission', email=submission['_User__email']) }}">
+                                <input type="text" name="reply" placeholder="Write your reply here" required>
+                                <button type="submit">Send Reply</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('delete_contact', email=submission['_User__email']) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    {% endif %}
+                </tr>
+                {% if selected_view == 'contact' and submission.get('replies') %}
+                <tr>
+                    <td colspan="5">
+                        <strong>Previous Replies:</strong>
+                        <ul>
+                            {% for reply in submission['replies'] %}
+                            <li>{{ reply['staff'] }}: {{ reply['reply'] }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

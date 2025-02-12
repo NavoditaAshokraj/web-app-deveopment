@@ -1,0 +1,62 @@
+{% extends "staff_template.html" %}
+
+{% block title %}Klinyx - Create Staff User{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='signup.css') }}">
+<body style="margin:0; height:100%; display:flex;">
+    <div style="margin-left: 24%; margin-top: 4.5%; background-color:#94D9DE; width:33%; height:100%;
+            border-radius:10px;">
+        {% from "includes/_SignUpFormHelper.html" import render_field %}
+        <p class='header' style="margin-top:10%;">Create Account</p>
+
+        <form method="POST" action="">
+            <div class="inputs">
+                <div class="fields" style="margin-left:15%;">
+                 {{ render_field(form.staff_id, class="field-box") }}
+                 </div>
+                <div class="fields">
+                 {{ render_field(form.name, class="field-box") }}
+                 </div>
+                 <div class="fields" style="margin-left:15%;">
+                 {{ render_field(form.password, class="field-box") }}
+                 </div>
+                 <div class="fields">
+                 {{ render_field(form.confirm, class="field-box") }}
+                 </div>
+                <div class="fields" style="margin-left:15%;">
+                 {{ render_field(form.nric, class="field-box") }}
+                 </div>
+                 <div class="fields">
+                 {{ render_field(form.email, class="field-box") }}
+                 </div>
+                 <div class="fields" style="margin-left:15%;">
+                 {{ render_field(form.number, class="field-box") }}
+                 </div>
+                <div class="fields">
+                 {{ render_field(form.role, class="field-box dropdown") }}
+                 </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div style="height:1vh; font-family: 'Arial'; font-size:12px; width:40vh; position:absolute;">
+                        {% for message in messages %}
+                            <p style="color:red;">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <section style="display:flex; flex-direction:row; width:100%;">
+                <a class="submit" style="padding-top:10px; height:28px;
+                color:black; background-color:white; font-size:14px; width:45%; padding-left:58px;
+                margin-right:-100px; text-decoration:none; margin-bottom:30px;"
+                   href="/accountManagement">
+                    Cancel</a>
+                <input type="submit" value="Create User" class="submit" style="padding-top:10px; padding-bottom:10px;
+                padding-left:22px; padding-right:22px; font-size:14px; cursor:pointer; margin-bottom:30px;
+                margin-right:38px;"/>
+            </section>
+        </form>
+    </div>
+</body>
+{% endblock %}

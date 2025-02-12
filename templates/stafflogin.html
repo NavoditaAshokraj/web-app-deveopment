@@ -1,0 +1,29 @@
+{% extends "login.html" %}
+
+{% block title %} Klinyx - Staff Login {% endblock %}
+
+{% block form %}
+<p style="margin-left:40%; padding-top:45%; font-family:Arial; font-size:30px;">
+            STAFF</p>
+<form class="form" method="POST">
+    {% from "includes/_SignUpFormHelper.html" import render_field %}
+    <div class="fields">
+         {{ render_field(form.staff_id, class="field-box") }}
+    </div>
+    <div class="fields">
+         {{ render_field(form.password, class="field-box") }}
+    </div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flashes">
+          {% for message in messages %}
+            <p id="error-msg">{{ message }}</p>
+          {% endfor %}
+        <div/>
+      {% endif %}
+    {% endwith %}
+    <input type="submit" value="Login" class="submit"/>
+    <p id="return" style="margin-top:5%;">Return to <a href="/">Previous Page</a></p
+</form>
+
+{% endblock %}

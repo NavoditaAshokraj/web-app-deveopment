@@ -1,0 +1,24 @@
+{% extends "staff_template.html" %}
+
+{% block title %}Storage {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='staff_portal_tables.css') }}">
+<!-- Main content area -->
+<div class="main-content">
+    <h1 class="display-4">{% block header %}{% endblock %}</h1>
+
+    {% block button %} {% endblock %}
+    <table class="table table-striped mt-3">
+        <thead style="background-color:#A4E9ED">
+            <tr>
+                {% block table_rows %}{% endblock %}
+            </tr>
+        </thead>
+        <tbody>
+            {% block table_data %}{% endblock %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

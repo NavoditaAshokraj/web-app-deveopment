@@ -1,0 +1,48 @@
+{% extends "staff_template.html" %}
+
+{% block title %} Klinyx - Edit Profile Details {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='signup.css') }}">
+<body style="background-color:#F5F5F5;">
+    <div style="background-color:#98DDE2; width: 40%; margin-left:22.5%; height:60vh; margin-top:6%;
+                row-gap:10vh; border-radius:10px;">
+        {% from "includes/_SignUpFormHelper.html" import render_field %}
+        <h1 style="padding-top:10%; margin-left:15%;">Edit Profile</h1>
+        <form method="POST" class="inputs" style="margin-left:15%; height:50vh; width:60%; display:flex; column-gap: 6%;
+            flex-wrap:wrap;">
+            <section style="display:grid; grid-template-columns: repeat(2, 1fr); column-gap:6%;">
+                <div class="fields">
+                 {{ render_field(form.name, class="field-box") }}
+                 </div>
+                 <div class="fields">
+                 {{ render_field(form.nric, class="field-box") }}
+                 </div>
+                 <div class="fields" style="margin-top:-9vh;">
+                 {{ render_field(form.email, class="field-box") }}
+                 </div>
+                 <div class="fields" style="margin-top:-9vh;">
+                 {{ render_field(form.number, class="field-box") }}
+                 </div>
+            </section>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="flashes" style="height:1vh; font-family: 'Arial'; font-size:12px; width:40vh;">
+                  {% for message in messages %}
+                    <p id="error-msg" style="color:red;">{{ message }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+            <section style="display:flex; flex-direction:row; width:100%;">
+                <a class="submit" style="padding-top:10px; height:28px; margin-top:-3vh;
+                padding-left:45px; padding-right:45px; color:black; background-color:white; font-size:14px;
+                border: 2px black; margin-right:-10vh; margin-left:17.5vh; text-decoration:none;" href="/portal">
+                    Cancel</a>
+                <input type="submit" value="Save Changes" class="submit" style="padding-top:10px; padding-bottom:10px;
+                padding-left:25px; padding-right:25px; font-size:14px; margin-top:-3vh;"/>
+            </section>
+        </form>
+    </div>
+</body>
+{% endblock %}

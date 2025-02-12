@@ -1,0 +1,28 @@
+{% extends "staff_template.html" %}
+
+{% block title %} Patient Details {% endblock %}
+
+{% block content %}
+
+<div style="display:flex; flex-direction:row;">
+  <section style="display:flex; flex-direction:column;">
+    <label style="font-family:'Arial'; margin-top:2.7vh; font-size:14px;">Full Name</label>
+    {{ user.get_name() }}
+    <label style="font-family:'Arial'; margin-top:2.7vh; font-size:14px;">Email Address</label>
+    {{ user.get_email() }}
+    <label style="font-family:'Arial'; margin-top:2.7vh; font-size:14px;">Date of Birth</label>
+    {{ user.get_dob() }}
+
+  </section>
+  <section style="display:flex; flex-direction:column;">
+    <label style="font-family:'Arial'; margin-top:2.7vh; font-size:14px;">NRIC</label>
+    {{ user.get_nric() }}
+    <label style="font-family:'Arial'; margin-top:2.7vh; font-size:14px;">Phone Number</label>
+    {{ user.get_number() }}
+    <label style="font-family:'Arial'; margin-top:2.7vh; font-size:14px;">Residential</label>
+    {{ user.get_address() }}
+
+  </section>
+</div>
+
+{% endblock %}

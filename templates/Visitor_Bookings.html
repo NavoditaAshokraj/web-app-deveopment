@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klinyx - Bookings</title>
+    <link rel="stylesheet" href="../static/_navbar.css">
+    <link rel="stylesheet" type="text/css" href="../static/bookings.css">
+</head>
+
+<body>
+
+<style>
+    .initial {
+        font-size: 220%;
+        text-align: center;
+        color: #F2F2F2;
+        border: #3b8c92;
+        border-radius: 100%;
+        {% for booking in booking_list %}
+            {% if booking.get_Date_of_visit() <= date and booking.get_Time_slot() < time %}
+                background-color: #CAC4D0;
+            {% else %}
+                background-color: #46A0A6;
+            {% endif %}
+        {% endfor %}
+        width: 3.5%;
+        padding: 1.5%;
+        margin-right: 2%;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+    {% block navbar %}
+        {% include '/includes/_navbar.html' %}
+    {% endblock %}
+
+    <h1>Bookings</h1>
+
+    <div class="bookings-container">
+        {% if not booking_list %}
+            <h2>You have no previous records.</h2>
+        {% else %}
+            {% for booking in booking_list %}
+                <a href="/home/records-{{ booking.get_booking_id() }}"><div class="booking-element">
+                    <h2 class="initial">{{ booking.get_name()[0] }}</h2>
+                    <div class="booking-text">
+                        <h1>{{ booking.get_Date_of_visit() }}</h1>
+                        <p>{{ booking.get_Purpose_of_visit() }}</p>
+                    </div>
+                </div></a>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>

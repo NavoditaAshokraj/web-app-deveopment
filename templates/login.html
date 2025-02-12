@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body style="background-color:#98DDE2">
+    <div style="background-color:#F2F2F2;width:45%;height:90vh;margin:auto;margin-top:5vh;
+                border-radius:15px;border-color:#3DA1A9;">
+        <img src="{{url_for('static', filename='klinyxlogo.png')}}"/>
+        {% block form %}
+        {% endblock %}
+    </div>
+</body>
+</html>

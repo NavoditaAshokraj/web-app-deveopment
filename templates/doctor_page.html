@@ -1,0 +1,37 @@
+{% extends "staff_template.html" %}
+{% block title %} {{ appointment.get_name() }} {% endblock %}
+
+{% block content %}
+<div style="display: block; margin-left: 2%;">
+    <div class="Header">
+        <h1>{{ appointment.get_name() }}</h1>
+        <h2>{{ appointment.get_Purpose_of_visit() }}</h2>
+    </div>
+
+    <div class="Form Contents">
+        <form method="POST" style="padding-block: 4%;">
+            {{ form.hidden_tag() }}
+            <label for="medicine">{{ form.medicine.label }}</label>
+            {{ form.medicine }}
+            <label for="quantity">{{ form.quantity.label }}</label>
+            {{ form.quantity }}
+            <input type="submit" name="action" value="add">
+            <br>
+            <label for="comment">{{ form.comment.label }}</label>
+            <br>
+            {{ form.comment }}
+
+
+            <h2>Medicines</h2>
+            {% for key in medicines %}
+                {{ medicines[key][1] }}: {{ medicines[key][0]}}<br>
+            {% endfor %}
+
+            <a href="/portal"><input type="submit" name="action" value="submit"></a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+

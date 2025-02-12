@@ -1,0 +1,37 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dropdown.css') }}">
+<div class="navbar">
+    <img src="{{ url_for('static', filename='Klynix.png') }}" id="logo" alt="Klinyxlogo" style="height: 70px; margin: 0.5% 0%; position: relative; right: 52%;">
+    <a href="/home">Home</a>
+    <a href="/home/records">Bookings</a>
+    <a href="/home/contact">Contact Us</a>
+    <div class="dropdown">
+      <img src="{{ url_for('static', filename='Accountlogo1.png') }}" onclick="dropdown()" class="dropbtn"
+          style="width: 75px; height: 55px; margin-top: 15px;margin-left: -10%;">
+      <div id="myDropdown" class="dropdown-content">
+        <a href="/editprofile">Edit Account Details</a>
+        <a href="/changepassword">Change Password</a>
+        <a href="/logout">Logout</a>
+      </div>
+    </div>
+</div>
+<div class="space"></div>
+<script>
+    function dropdown() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+</script>
+
+

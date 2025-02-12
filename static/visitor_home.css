@@ -1,0 +1,78 @@
+body {
+    margin: 0%;
+    overflow: hidden; 
+    background-color: #F2F2F2;
+    font-family: Arial, sans-serif;
+    display: grid;
+    grid-template-areas: 
+        "navbar navbar navbar navbar"
+        "button button card card"
+        "button button card card";
+}
+
+.button-container {
+    display: grid;
+    grid-area: button;
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+    align-content: center;
+    padding-top: 13%;
+    margin-left: 18%
+}
+
+.button-container > a > button {
+    text-align: center;
+    padding-block: 8%;
+    border-radius: 20px;
+    background-color: #2C2C2C;
+    color: #F2F2F2;
+    font-size: 130%;
+    width: 100%;
+}
+
+.button-container > a > button:hover {
+    background-color: black;
+}
+
+.navbar {
+    background-color: rgb(255, 255, 255);
+    grid-area: navbar;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.navbar a {
+    display: block;
+    color: black;
+    text-align: center;
+    margin: 5vh 3.5vh;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.card-container {
+    grid-area: card;
+    margin-right: 10%;
+}
+
+.card {
+    margin-top: 10%;
+    margin-inline: 13%;
+    padding-block: 5%;
+    display: block;
+    text-align: center;
+    background-color: white;
+    border: #F2F2F2;
+    border-radius: 20px;
+    font-size: 140%;
+}
+
+.card > h1 {
+    font-size: 500%;
+    font-weight: 700;
+}

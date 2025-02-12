@@ -1,0 +1,73 @@
+{% extends "staff_template.html" %}
+{% block title %} Klinyx - Appointments {% endblock %}
+
+{% block content %}
+<style>
+
+/* Ensuring that the wrapper uses flexbox to align items side by side */
+.wrapper {
+    display: flex;
+}
+
+/* Styling for the main content area */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 20px; /* Optional: to create space between sidebar and content */
+}
+
+.table {
+    width: 1200px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+</style>
+
+<div class="wrapper">
+    <!-- Main content area -->
+    <div class="main-content">
+        <h1 class="display-4">Appointments Overview</h1>
+
+        {% if not appointments_list %}
+            <h1>There are no appointments.</h1>
+        {% else %}
+            <table class="table table-striped mt-3">
+                <thead style="background-color:#A4E9ED">
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email Address</th>
+                        <th>Mobile Number</th>
+                        <th>Date of Birth</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment_instance in appointments_list %}
+                        <tr>
+                            <td>
+                                <a href="/portal/prescription-{{ appointment_instance.get_booking_id() }}">
+                                    {{ appointment_instance.get_name() }}
+                                </a>
+                            </td>
+                            <td>{{ appointment_instance.get_email() }}</td>
+                            <td>{{ appointment_instance.get_number() }}</td>
+                            <td>{{ appointment_instance.get_dob() }}</td>
+                            <td>{{ appointment_instance.get_Location() }}</td>
+                            <td>{{ appointment_instance.get_Date_of_visit() }}</td>
+                            <td>{{ appointment_instance.get_Time_slot() }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

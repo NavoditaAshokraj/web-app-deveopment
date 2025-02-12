@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Klinyx - Contact Us{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+<style>
+html {
+  background-color: #F2F2F2;
+}
+.form-group{
+    padding-bottom:20px;
+}
+.form-control {
+    width: 500px;
+    height: 40px;
+}
+.navbar a {
+    margin: 4.5vh 3.5vh;
+}
+.space {
+    margin-top:0;
+    height:55px;
+    background:transparent;
+}
+</style>
+<div style="background-color: #F2F2F2;">
+<h1 class="display-12" style="text-align: center; padding-top: 20px;">Contact Us</h1>
+<h3 class="display-12" style="text-align: center; padding-bottom: 20px;">Enquiry</h3>
+<div id="feedback" class="container" style="background-color: #98DDE2; border-radius: 25px; padding-top:50px;
+padding-bottom:50px; width:60%; margin-left:20%; display:flex; justify-content:center;">
+
+  <div class="row">
+    <div class="col-md-8">
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="row">
+          <div class="col-sm-12 form-group"style="width:100px;">
+            {{ render_field(form.full_name, class="form-control") }}
+          </div>
+          <div class="col-sm-12 form-group"style="width:110px;">
+            {{ render_field(form.email, class="form-control") }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group"style="width:100px;">
+            {{ render_field(form.Subject, class="form-control") }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group"style="width:100px;">
+            {{ render_field(form.remarks, class="form-control") }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 form-group" >
+            <input type="submit" value="Submit" class="btn btn-primary" style="background-color: black; width:500px; height:40px; color:white;"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

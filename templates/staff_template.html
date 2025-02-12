@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dropdown.css') }}">
+    <title>{% block title %} {% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            width: 100%;
+            background-color: white;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .navbar a {
+            display: block;
+            color: black;
+            text-align: center;
+            margin: 35px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .content-wrapper {
+            display: flex;
+            width: 100%;
+        }
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+            background-color: #98DDE2;
+            padding: 15px;
+            padding-top: 9%;
+            padding-left: 5%;
+            box-sizing: border-box;
+        }
+        .sidebar p {
+            font-weight:bold;
+            font-size: 24px;
+            opacity: 60%;
+            margin-bottom: 0px;
+            margin-top: 25px;
+        }
+        .sidebar a {
+            display: block;
+            opacity: 55%;
+            color: #333;
+            text-decoration: none;
+            padding-top: 20px;
+            margin-left:-15px;
+            font-size: 16px;
+        }
+        .sidebar a:hover {
+            text-decoration: underline;
+
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .options {
+            margin-top:15px;
+        }
+    </style>
+</head>
+<body style="overflow: hidden; background-color: #F2F2F2;">
+
+<div class="navbar">
+    <img src="{{ url_for('static', filename='Klynix.png') }}" style="width: 15%; margin: 0.5% 0%; position:
+    relative; right: 57%;">
+    <a href="/portal">Dashboard</a>
+    <a href="/portal/inventory">Inventory</a>
+    <a href="/accountManagement">Accounts</a>
+    <div class="dropdown">
+      <img src="{{ url_for('static', filename='Accountlogo1.png') }}" onclick="dropdown()" class="dropbtn"
+          style="width: 75px; height: 55px; margin-top: 20%;margin-left: -10%;">
+      <div id="myDropdown" class="dropdown-content">
+        <a href="/staffEditProfile">Edit Account Details</a>
+        <a href="/changeStaffPassword">Change Password</a>
+        <a href="/staffLogout">Logout</a>
+      </div>
+    </div>
+
+
+
+</div>
+
+<div class="content-wrapper">
+    <div class="sidebar">
+        <p>Menu</p>
+        <section class="options">
+            <a href="/createreport">Create Report</a>
+            <a href="/reportlist">View Reports</a>
+            <a href="/accountManagement">Accounts</a>
+            <a href="/portal/appointments">Appointments</a>
+            <a href="/portal/inventory">Inventory</a>
+            <a href="/portal/forms_view">Help Desk</a>
+        </section>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+<script>
+    function dropdown() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+</script>
+{% block scripts %}
+{% endblock %}
+</html>

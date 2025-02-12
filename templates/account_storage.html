@@ -1,0 +1,181 @@
+{% extends "storage_template.html" %}
+
+{% block title %} Klinyx - Account Storage{% endblock %}
+
+{% block header %}Account Management{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dropdown.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='staff_portal_tables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='storage_pills.css') }}">
+
+<!-- Main content area -->
+<div class="main-content">
+    <h1 class="display-4">Accounts Overview</h1>
+
+    {% block button %}
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" onclick="showTable('patients', this)">Patients</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showTable('staff', this)">Staff</a>
+        </li>
+    </ul>
+    {% endblock %}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flashes">
+          {% for message in messages %}
+            <p id="error-msg" style="color:red; font-size:12px; position:absolute; margin-left:200px;
+            margin-top:-25px;">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+
+    <!-- Button to create a new staff, initially hidden -->
+    <div id="create-user-btn" style="display: none; margin-top: 2vh;">
+        <button onclick="window.location.href='{{ url_for('create_staff_user') }}'" class="btn btn-primary"
+        style="position:absolute; margin-left:68%; margin-top:-3.5%; padding: 10px 20px; border-radius: 10px;
+        background-color:black; color:white; cursor:pointer;">
+            Create User</button>
+    </div>
+
+    <div id="patients-table" style="display: block; margin-top:2vh;">
+        <table class="table table-striped mt-3">
+            <thead style="background-color:#A4E9ED">
+                {% block patients_table_rows %}
+                <tr>
+                    <th>Name</th>
+                    <th>Email Address</th>
+                    <th>Phone Number</th>
+                    <th>Date of Birth</th>
+                    <th>Actions</th>
+                </tr>
+                {% endblock %}
+            </thead>
+            <tbody>
+                {% block patients_table_data %}
+                {% for user in patient %}
+                <tr>
+                    <td>{{ user.get_name() }}</td>
+                    <td>{{ user.get_email() }}</td>
+                    <td>{{ user.get_number() }}</td>
+                    <td>{{ user.get_dob() }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button onclick="toggleDropdown(event, 'dropdown-patient-{{ loop.index }}')" class="dropbtn" style="margin-left:80%;">
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </button>
+                            <div id="dropdown-patient-{{ loop.index }}" class="dropdown-content" style="height:10vh;">
+                                <a href="{{ url_for('reset_password', id=user.get_email()) }}" style="border:none; cursor:pointer; margin-top:2vh; text-align:center;">
+                                    Reset Password
+                                </a>
+                                <form style="margin-top:2vh; text-align:center;" action="{{ url_for('delete_user', id=user.get_email()) }}" method="POST">
+                                    <button type="submit" style="border:none; cursor:pointer;" onclick="return confirm('Are you sure you want to delete {{user.get_name()}}?');">
+                                        Delete Account
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endblock %}
+            </tbody>
+        </table>
+    </div>
+
+<div id="staff-table" style="display: none; margin-top:2vh;">
+        <table class="table table-striped mt-3">
+            <thead style="background-color:#A4E9ED">
+                {% block staff_table_rows %}
+                <tr>
+                    <th>Staff ID</th>
+                    <th>Name</th>
+                    <th>Email Address</th>
+                    <th>Phone Number</th>
+                    <th>Actions</th>
+                </tr>
+                {% endblock %}
+            </thead>
+            <tbody>
+                {% block staff_table_data %}
+                {% for user in staff %}
+                <tr>
+                    <td>{{ user.get_staff_id() }}</td>
+                    <td>{{ user.get_name() }}</td>
+                    <td>{{ user.get_email() }}</td>
+                    <td>{{ user.get_number() }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button onclick="toggleDropdown(event, 'dropdown-staff-{{ loop.index }}')" class="dropbtn" style="margin-left:80%;">
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </button>
+                            <div id="dropdown-staff-{{ loop.index }}" class="dropdown-content" style="height:10vh;">
+                                <a href="{{ url_for('reset_staff_password', id=user.get_staff_id()) }}" style="border:none; cursor:pointer; margin-top:2vh; text-align:center;">
+                                    Reset Password
+                                </a>
+                                <form style="margin-top:2vh; text-align:center;" action="{{ url_for('delete_staff_user', id=user.get_staff_id()) }}" method="POST">
+                                    <button type="submit" style="border:none; cursor:pointer;" onclick="return confirm('Are you sure you want to delete {{user.get_name()}}?');">
+                                        Delete Account
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endblock %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function showTable(tableId, clickedElement) {
+        // Hide all tables
+        document.getElementById('patients-table').style.display = 'none';
+        document.getElementById('staff-table').style.display = 'none';
+
+        // Show the selected table
+        document.getElementById(tableId + '-table').style.display = 'block';
+
+        // Show or hide the "Create User" button based on the table
+        document.getElementById('create-user-btn').style.display = tableId === 'staff' ? 'block' : 'none';
+
+        // Remove active class from all nav links
+        var navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(function(link) {
+            link.classList.remove('active');
+        });
+
+        // Add active class to the clicked nav link
+        if (clickedElement) {
+            clickedElement.classList.add('active');
+        }
+    }
+
+    function toggleDropdown(event, dropdownId) {
+        event.stopPropagation();
+        var dropdown = document.getElementById(dropdownId);
+        dropdown.classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var dropdown = dropdowns[i];
+                if (dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+
+{% endblock %}

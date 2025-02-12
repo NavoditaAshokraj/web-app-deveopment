@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klinyx - Bookings</title>
+    <link rel="stylesheet" href="../static/_navbar.css">
+    <link rel="stylesheet" type="text/css" href="../static/bookings.css">
+</head>
+
+<body>
+    {% block navbar %}
+        {% include '/includes/_navbar.html' %}
+    {% endblock %}
+
+    <h1 style="margin-block: 3px;">Bookings</h1>
+
+    <div class="card">
+        <div class="content-wrap-left">
+            <div>
+                <h2>Full Name</h2>
+                <p id="fullname">{{ info.get_name() }}</p>
+            </div>
+
+            <div>
+                <h2>Date of Visit</h2>
+                <p id="visitdate">{{ info.get_Date_of_visit() }}</p>
+            </div>
+
+            <div>
+                <h2>Time Slot</h2>
+                <p id="timeslot">{{ info.get_Time_slot() }}</p>
+            </div>
+        </div>
+
+
+        <div class="content-wrap-right">
+            <div>
+                <h2>Location</h2>
+                <p id="location">{{ info.get_Location() }}</p>
+            </div>
+
+            <div>
+                <h2>Appointment ID</h2>
+                <p id="appid">{{ info.get_booking_id() }}</p>
+            </div>
+
+            <div>
+                <h2>Purpose of Visit</h2>
+                <p id="visitpurpose">{{ info.get_Purpose_of_visit() }}</p>
+            </div>
+        </div>
+
+        <div class="buttons">
+            {% if date <= info.get_Date_of_visit() - button_criteria %}
+                <form action="{{ url_for('cancel_booking', id=info.get_booking_id()) }}" method="POST">
+                    <input type="submit" value="Cancel" id="cancel" class="btn btn-danger" onclick="return confirm('Are
+                    you sure you want to cancel your {{ info.get_Purpose_of_visit }} on {{ info.get_Date_of_visit() }}
+                    {{ info.get_Time_slot() }} at {{ info.get_Location() }}?');">
+                </form>
+                <a href="/home/records/reschedule-{{ info.get_booking_id() }}" id="reschedule" class="btn btn warning">Reschedule</a>
+            {% endif %}
+            {% if date >= info.get_Date_of_visit()%}
+                <button id="MC">Get MC</button>
+                <button id="invoice">Get Invoice</button>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.getElementById('MC').addEventListener('click', function() {
+            const bookingId = '{{ info.get_booking_id() }}'; // Get the booking ID from the template
+
+            fetch(`/generate_mc/${bookingId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/pdf'
+                }
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'medical_certificate.pdf'; // Name of the downloaded file
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+        document.getElementById('invoice').addEventListener('click', function() {
+            fetch('/generate_invoice')
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'invoice.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
